@@ -33,5 +33,44 @@
  * @returns {number} Parking fee or -1 for invalid input
  */
 export function calculateParkingFee(hours, vehicleType) {
-  // Your code here
+  
+  if(typeof hours!=='number') return -1;
+  if(hours <=0 ) return -1;
+
+  if(typeof vehicleType!=='string') return -1;
+  //console.log("hours",hours);
+
+  hours = Math.ceil(hours); 
+
+   let vehicleArray = ["car", "motorcycle","bus"];
+   if(!vehicleArray.includes(vehicleType)) return -1;
+   let parkingFee = 0; 
+   if(vehicleType=="car") {
+      parkingFee = calculateFee(hours,5,3);
+      return checkParkingCap(parkingFee,30);
+  } else if(vehicleType=="motorcycle") {
+       parkingFee = calculateFee(hours,3,2);
+       return checkParkingCap(parkingFee,18);
+   } else if(vehicleType=="bus") {
+       parkingFee = calculateFee(hours,10,7); 
+       return checkParkingCap(parkingFee,60);
+   }
+
+
+   return parkingFee;
+}
+const calculateFee = (hours,initRate,rates)=>{
+  
+  if(hours == 1) {
+    return initRate;
+  } else {
+    return initRate + (hours-1) * rates
+  }
+
+}
+
+const checkParkingCap = (fee,limit)=>{
+
+  return fee > limit ? limit : fee;
+
 }
